@@ -37,25 +37,23 @@ class CommandContext implements KernelAwareContext
 	/**
      * @Given a shell console
      */
-    public function aShellConsole()
-    {
-        //throw new PendingException();
-    }
+    public function aShellConsole(){}
 
-    /**
-     * @When I execute the :commandName command
+ /**
+     * @When I execute the :commandName command with a :optionName option and :param parameter
      */
-    public function iExecuteTheCommand($commandName)
+    public function iExecuteTheCommandWithAOptionAndParameter($commandName, $optionName, $param)
     {
     	$this->setApplication();
         $this->addCommand(new ImportCSVCommand());
         $this->setCommand( $commandName );
  
         try {
-            $this->getTester($this->command)->execute([]);
+            $this->getTester($this->command)->execute([ $optionName => $param ]);
         } catch (Exception $exception) {
             $path = explode('\\', get_class($exception));
-            $this->commandException = array_pop($path);
+            //$this->commandException = array_pop($path);
+            $this->commandException = $exception->getMessage();
         }
     }
  
@@ -71,17 +69,58 @@ class CommandContext implements KernelAwareContext
             throw new LogicException(sprintf('Current output is: [%s]', $output));
         }
     }
- 
-    /**
-     * @param string $expectedException
-     *
-     * @Then /^the command exception should be "([^"]*)"$/
+
+     /**
+     * @When the file :filename exists
      */
-    public function theCommandExceptionShouldBe($expectedException)
+    public function theFileExists($filename)
     {
-        if ($this->commandException != $expectedException) {
+    	$file = $this->getFullPath( $filename );
+    	if (!file_exists($file)) {
+    		throw new LogicException(sprintf('This file does not exist: [%s]', $file));
+    	}
+    }
+
+    /**
+     * @When the file :filename is a CSV file
+     */
+    public function theFileIsACsvFile($filename)
+    {
+    	$file = $this->getFullPath( $filename );
+    }
+
+    /**
+     * @When the file :filename does not exists
+     */
+    public function theFileDoesNotExists($filename)
+    {
+    	$file = $this->getFullPath( $filename );
+    	if (file_exists($file)) {
+    		throw new LogicException(sprintf('This file does not exist: [%s]', $file));
+    	}
+    }
+
+    /**
+     * @When the file :filename is not a valid CSV
+     */
+    public function theFileIsNotAValidCsv($filename)
+    {
+    	$file = $this->getFullPath( $filename );
+    }
+
+    /**
+     * @Then the command CommandException should be :expectedException
+     */
+    public function theCommandCommandexceptionShouldBe($expectedException)
+    {
+    	if ($this->commandException != $expectedException) {
             throw new LogicException(sprintf('Current exception is: [%s]', $this->commandException));
         }
+    }
+
+    private function getFullPath( $filename )
+    {
+		return $this->kernel->getRootDir() . '/../storage/' . $filename;
     }
  
     private function setApplication()
