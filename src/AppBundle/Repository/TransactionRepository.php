@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use \Doctrine\DBAL\Types\Type as DataType;
+
 /**
  * TransactionRepository
  *
@@ -10,4 +12,20 @@ namespace AppBundle\Repository;
  */
 class TransactionRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function import($data)
+	{
+		// Use pure SQL as is much more faster
+        $sql = "INSERT INTO Transaction(transaction_id, store_id, total_amount, currency, created_at)
+                VALUES (:transactionId, :storeId, :totalAmount, :currency, :createdAt)";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        
+        $stmt->bindValue( "transactionId", $data['TRANSACTION ID'] );
+        $stmt->bindValue( "storeId", $data['STORE ID'] );
+        $stmt->bindValue( "totalAmount", $data['TOTAL AMOUNT'] );
+        $stmt->bindValue( "currency", $data['CURRENCY'] );
+        $stmt->bindValue( "createdAt", new \Datetime($data['CREATED AT']), DataType::DATETIME );
+
+        $stmt->execute();
+	}
 }
