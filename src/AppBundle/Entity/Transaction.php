@@ -24,6 +24,13 @@ class Transaction
     private $id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="transaction_id", type="integer", nullable=true)
+     */
+    private $transactionId;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="total_amount", type="float")
@@ -184,6 +191,25 @@ class Transaction
     public function setRefund(Refund $refund)
     {
         $this->refund = $refund;
+        return $this;
+    }
+
+    /**
+    * Get transactionId
+    * @return  integer | null
+    */
+    public function getTransactionId()
+    {
+        return $this->transactionId;
+    }
+    
+    /**
+    * Set transactionId
+    * @return $this
+    */
+    public function setTransactionId($transactionId)
+    {
+        $this->transactionId = $transactionId;
         return $this;
     }
 }

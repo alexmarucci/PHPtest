@@ -20,14 +20,18 @@ class TransactionCSVImporter
 		$this->parser->delimiter = ",";
         $this->parser->parse($file);
 		$index = 0;
+		$totalTransactionImported = 0;
         foreach ($this->parser->data as $line) {
         	$index++;
         	$data = $this->prepareData( $line, $index );
         	$stmt = $this->prepareQuery( $data );
-        	$stmt->execute();
+        	try {
+        		$stmt->execute();
+        		$totalTransactionImported++;
+        	} catch (\Exception $e) { }
         }
 
-        return sizeof( $this->parser->data );
+        return $totalTransactionImported;
 	}
 
 	private function prepareData($line, $lineNo)
@@ -49,7 +53,7 @@ class TransactionCSVImporter
 	private function prepareQuery($data)
 	{
 		// Use pure SQL as is much more faster
-        $sql = "INSERT INTO Transaction(id, store_id, total_amount, currency, created_at)
+        $sql = "INSERT INTO Transaction(transaction_id, store_id, total_amount, currency, created_at)
                 VALUES (:transactionId, :storeId, :totalAmount, :currency, :createdAt)";
 
         $stmt = $this->em->getConnection()->prepare($sql);
