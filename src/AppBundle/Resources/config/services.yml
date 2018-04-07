@@ -1,0 +1,7 @@
+services:
+    csv_parser:
+      class: ParseCsv\Csv
+    transaction_csv_importer:
+        class: AppBundle\Service\TransactionCSVImporter
+        arguments: ["@csv_parser", "@doctrine.orm.entity_manager"]
+        public: true
