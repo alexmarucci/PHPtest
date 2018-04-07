@@ -21,4 +21,4 @@ Feature: Import CSV Command
     When I execute the "transactions:import-csv" command with a "filename" option and "salesData_06-04-2018_invalid.csv" parameter
     And the file "salesData_06-04-2018_invalid.csv" exists
     And the file "salesData_06-04-2018_invalid.csv" is not a valid CSV
-    Then the command CommandException should be "Error while parsing the file salesData_06-04-2018_invalid.csv"
+    Then the command CommandException should be "Error while parsing the file. ""salesData_06-04-2018_invalid.csv"

@@ -3,6 +3,7 @@ namespace tests\AppBundle\Context;
  
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Exception;
 use AppBundle\Command\ImportCSVCommand;
 use LogicException;
@@ -65,6 +66,7 @@ class CommandContext implements KernelAwareContext
     public function theCommandOutputShouldBe($expectedOutput)
     {
         $output = trim($this->commandTester->getDisplay());
+        dump( $this->commandTester->getDisplay() );
         if ($output != $expectedOutput) {
             throw new LogicException(sprintf('Current output is: [%s]', $output));
         }
@@ -118,6 +120,17 @@ class CommandContext implements KernelAwareContext
         }
     }
 
+    /**
+     * @Then the command CommandException should be :expectedException:filename
+     */
+    public function theCommandCommandexceptionShouldBe2($expectedException, $filename)
+    {
+        $expectedException .= $this->getFullPath( $filename );
+        if ($this->commandException != $expectedException) {
+            throw new LogicException(sprintf('Current exception is: [%s]', $this->commandException));
+        }
+    }
+
     private function getFullPath( $filename )
     {
 		return $this->kernel->getRootDir() . '/../storage/' . $filename;
@@ -153,5 +166,13 @@ class CommandContext implements KernelAwareContext
         $this->commandTester = new CommandTester($command);
  
         return $this->commandTester;
+    }
+
+    /** @AfterScenario */
+    public function cleanDB(AfterScenarioScope $event)
+    {
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        $query = $em->createQuery('DELETE FROM AppBundle:Transaction');
+        $query->execute(); 
     }
 }
