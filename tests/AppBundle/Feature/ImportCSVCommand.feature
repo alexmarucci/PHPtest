@@ -1,3 +1,4 @@
+@importCSV
 Feature: Import CSV Command
   In order to get all the daily sales from the stores
   As a developer

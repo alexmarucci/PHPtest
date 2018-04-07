@@ -8,9 +8,8 @@ default:
       contexts:
         - tests\AppBundle\Context\FeatureContext
         - tests\AppBundle\Context\CommandContext
+        - tests\AppBundle\Context\RestContext
         - Behat\MinkExtension\Context\MinkContext
-        - behatch:context:json
-        - behatch:context:rest
   extensions:
     Behat\Symfony2Extension: ~
     Behat\MinkExtension:

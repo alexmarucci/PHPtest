@@ -66,7 +66,6 @@ class CommandContext implements KernelAwareContext
     public function theCommandOutputShouldBe($expectedOutput)
     {
         $output = trim($this->commandTester->getDisplay());
-        dump( $this->commandTester->getDisplay() );
         if ($output != $expectedOutput) {
             throw new LogicException(sprintf('Current output is: [%s]', $output));
         }
