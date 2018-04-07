@@ -5,3 +5,8 @@ services:
         class: AppBundle\Service\TransactionCSVImporter
         arguments: ["@csv_parser", "@doctrine.orm.entity_manager"]
         public: true
+    add_transaction_command_handler:
+        class: AppBundle\Domain\Api\Handler\AddTransactionHandler
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: command_handler, handles: AppBundle\Domain\Api\Action\AddTransactionAction }

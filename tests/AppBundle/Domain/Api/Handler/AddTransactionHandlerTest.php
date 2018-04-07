@@ -25,19 +25,28 @@ class AddTransactionActionTest extends KernelTestCase
         $data['TOTAL AMOUNT'] = '1';
         $data['CURRENCY'] = 'GBP';
         $data['CREATED AT'] = '07/04/2018 10:10';
-
+        
+        $em = static::$kernel->getContainer()->get('doctrine')->getManager();
         $commandBus = static::$kernel->getContainer()->get('command_bus');
         $commandBus->handle(new AddTransactionAction( $data ));
 
         $transactionImported = $em->getRepository(Transaction::class)->findOneByTransactionId(123456);
+
         $this->assertInstanceOf(Transaction::class, $transactionImported );
     }
 
+    private function clearTransactionData()
+    {
+        $em = static::$kernel->getContainer()->get('doctrine')->getManager();
+        $query = $em->createQuery('DELETE FROM AppBundle:Transaction');
+        $query->execute(); 
+    }
     /**
      * {@inheritDoc}
      */
     protected function tearDown()
     {
+        $this->clearTransactionData();
         parent::tearDown();
     }
 }

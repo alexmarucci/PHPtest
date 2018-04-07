@@ -16,9 +16,9 @@ class AddTransactionAction
 	}
 	/**
 	* Get transactionData
-	* @return Transaction
+	* @return array
 	*/
-	public function getTransaction() :Transaction
+	public function getTransactionData() :array
 	{
 	    return $this->transactionData;
 	}
