@@ -1,4 +1,7 @@
 services:
+    transaction_validator:
+        class: AppBundle\Service\TransactionValidator
+        arguments: ["@form.factory"]
     base_handler:
         class: AppBundle\Domain\Handler
         abstract:  true

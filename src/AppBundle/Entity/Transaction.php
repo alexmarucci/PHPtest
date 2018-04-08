@@ -2,10 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Store;
 use AppBundle\Entity\Refund;
-
 /**
  * Transaction
  *
@@ -40,6 +40,7 @@ class Transaction
     /**
      * @var string
      *
+     * @Assert\Currency
      * @ORM\Column(name="currency", type="string", length=5)
      */
     private $currency;
@@ -47,12 +48,16 @@ class Transaction
     /**
      * @var \DateTime
      *
+     * @Assert\NotBlank()
+     * @Assert\Type("\DateTime")
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
      * @var Store
+     *
+     * @Assert\NotBlank()
      *
      * @ORM\ManyToOne(targetEntity="Store", inversedBy="transactions")
      * @ORM\JoinColumn(name="store_id", referencedColumnName="id")
