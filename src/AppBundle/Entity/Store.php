@@ -67,6 +67,16 @@ class Store
     }
 
     /**
+     * Get id
+     *
+     * @return int
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
      * Set name
      *
      * @param string $name

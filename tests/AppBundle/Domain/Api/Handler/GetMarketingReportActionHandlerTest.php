@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Domain\Transaction\Handler;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use AppBundle\Entity\Transaction;
 use AppBundle\Entity\Store;
+use AppBundle\Report\MarketingReport;
 use AppBundle\Domain\Transaction\Action\GetMarketingReportAction;
 use AppBundle\Domain\Transaction\Responder\SimpleResponder;
 
@@ -36,16 +37,20 @@ class GetMarketingReportActionHandler extends KernelTestCase
                 'revenue' => 30
             ]
         );
-        $this->assertEquals($responder->respond(), $expectedData);
+        $report = $responder->respond();
+        $this->assertInstanceOf(MarketingReport::class, $report);
+        $this->assertEquals($report->toArray(), $expectedData);
     }
 
     private function getFakeStore()
     {
         $store = new Store();
+        $store->setId(1);
         $store->setName('Test Store');
         for ($i=0; $i < 3; $i++) { 
             $transaction = new Transaction();
             $transaction->setTotalAmount(10);
+            $transaction->setStore($store);
             $store->addTransaction( $transaction );
         }
 

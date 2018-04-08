@@ -40,3 +40,9 @@ services:
         public: true
         tags:
             - { name: event_subscriber, subscribes_to: transaction_added_event, method: onTransactionAdded }
+    marketing_report_listener:
+        class: AppBundle\Domain\Transaction\EventListener\MarketingReportReadyListener
+        arguments: ['@AppBundle\Domain\Transaction\Responder\SimpleResponder']
+        public: true
+        tags:
+            - { name: event_subscriber, subscribes_to: marketing_report_ready_event, method: onReportReady }
