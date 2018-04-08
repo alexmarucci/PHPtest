@@ -67,7 +67,7 @@ class Transaction
     /**
      * @var Refund
      *
-     * @ORM\OneToOne(targetEntity="Refund", inversedBy="transaction")
+     * @ORM\OneToOne(targetEntity="Refund", inversedBy="transaction", cascade={"persist"})
      * @ORM\JoinColumn(name="refund_id", referencedColumnName="id", nullable=true)
      */
     private $refund;
@@ -79,6 +79,16 @@ class Transaction
      * @return int
      */
     public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @return int
+     */
+    public function setId()
     {
         return $this->id;
     }

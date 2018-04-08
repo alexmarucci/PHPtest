@@ -30,7 +30,7 @@ class TransactionValidator
 			return $form->getData();
         } else {
         	$errors = $this->getFormErrors($form);
-        	throw new TransactionNotValidException("Error Validating Data." . json_encode($form->getErrors()), 500, null, $errors);
+        	throw new TransactionNotValidException("Error Validating Data." . json_encode($form->getErrors()), 400, null, $errors);
         }
 	}
 

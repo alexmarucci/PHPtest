@@ -13,6 +13,13 @@ services:
         class: AppBundle\Service\TransactionCSVImporter
         arguments: ["@csv_parser", "@doctrine.orm.entity_manager"]
         public: true
+    refund_transaction_command_handler:
+        class: AppBundle\Domain\Api\Handler\RefundTransactionHandler
+        parent: "base_handler"
+        public: true
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: command_handler, handles: refund_transaction_action }
     add_transaction_command_handler:
         class: AppBundle\Domain\Api\Handler\AddTransactionHandler
         parent: "base_handler"

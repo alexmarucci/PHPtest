@@ -1,12 +1,15 @@
 <?php
 namespace tests\AppBundle\Context;
  
+use AppBundle\Entity\Transaction;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Gherkin\Node\PyStringNode;
 use Behatch\Context\RestContext as BehatchRest;
- 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+
 class RestContext extends BehatchRest implements KernelAwareContext
 {
 
@@ -30,21 +33,32 @@ class RestContext extends BehatchRest implements KernelAwareContext
     {
         $this->kernel = $kernel;
     }
+    /**
+     * @BeforeScenario
+     */
+     public function prepare(BeforeScenarioScope $scope)
+     {
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+
+        $stmt = $em->getConnection()->prepare('INSERT INTO Transaction(id, total_amount, currency) VALUES(1, "1", "GBP")');
+        $stmt->execute();
+     }
 
     public function iSendARequestTo($method, $url, PyStringNode $body = null, $files = [])
     {
         if(null !== $body){
             $body = $body->getRaw();
             $body = trim(preg_replace('/\s+/', ' ', $body));
+            $body = json_decode($body, true);
         }
 
         return $this->request->send(
             $method,
             $this->locatePath($url),
-            [],
+            is_array($body) ? $body : [],
             $files,
             $body !== null ? $body : null,
-            ['Content-Type: application/json']
+            ['content_type' => 'application/json']
         );
     }
 
@@ -60,5 +74,14 @@ class RestContext extends BehatchRest implements KernelAwareContext
         $this->assertEquals($expected, $actual, $message);
     	$response = $this->request->getContent();
     	*/
+    }
+
+    /** @AfterScenario */
+    public function cleanDB(AfterScenarioScope $event)
+    {
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+        $query = $em->createQuery('DELETE FROM AppBundle:Refund');
+        $query = $em->createQuery('DELETE FROM AppBundle:Transaction');
+        $query->execute(); 
     }
 }

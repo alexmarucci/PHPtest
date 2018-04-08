@@ -7,20 +7,11 @@ Feature: Rest API - Add Transactions
   Background:
   	Given I send a "POST" request to "api/v1/transactions" with body:
   	"""
-	{
-		"transaction_id": "123456",
-		"store": "1",
-		"total_amount": "1",
-		"currency": "GBP",
-		"created_at": "07/04/2018 16:16",
-		"apiKey": "xxxxx_good_api_key_xxxxxxx"
-	}
+  	{"transaction_id": "123456","store": "1","total_amount": "1","currency": "GBP","created_at": "07/04/2018 16:16"}
   	"""
 
   Scenario: Create a transaction
   	Then the response status code should be 201
-  	Then the header "Location" should be equal to "/api/v1/transactions/1"
-  	And the "transaction_id" property should be equals to "123456"
 
   Scenario Outline: Throw an exception using wrong methods
   	When I send a <notAllowedMethods> request to "api/v1/transactions"
@@ -37,25 +28,6 @@ Feature: Rest API - Add Transactions
   Scenario: Throw an exception using a bad payload
   	Given I send a "POST" request to "api/v1/transactions" with body:
   	"""
-  	{
-		'store_id': 'XX',
-		'total_amount': '1',
-		'currency': 'GBP',
-		'created_at': '07/04/2018 16:16',
-		'apiKey': 'xxxxx_good_api_key_xxxxxxx'
-  	}
+  	{"store": "XX"}
   	"""
   	Then the response status code should be 400
-  
-  Scenario: Throw an exception using a wrong api key
-  Given I send a "POST" request to "api/v1/transactions" with body:
-	  	"""
-	  	{
-			'store_id': 'XX',
-			'total_amount': '1',
-			'currency': 'GBP',
-			'created_at': '07/04/2018 16:16',
-			'apiKey': 'xxxxx_bad_api_key_xxxxxxx'
-	  	}
-	  	"""
-	Then the response status code should be 401

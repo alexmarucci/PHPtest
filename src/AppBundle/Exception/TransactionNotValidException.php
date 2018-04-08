@@ -5,7 +5,7 @@ class TransactionNotValidException extends \Exception
 {
 	protected $errors;
 
-    public function __construct($message, $code = 0, Exception $previous = null, $errors) {
+    public function __construct($message, $code = 400, Exception $previous = null, $errors) {
     	$this->errors = $errors;
 
         parent::__construct($message, $code, $previous);

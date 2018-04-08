@@ -7,14 +7,18 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use SimpleBus\SymfonyBridge\Bus\CommandBus;
 
 use AppBundle\Entity\Transaction;
 use AppBundle\Domain\Api\Action\AddTransactionAction;
+use AppBundle\Domain\Api\Action\RefundTransactionAction;
 use AppBundle\Domain\Api\Responder\SimpleResponder;
 use AppBundle\Service\TransactionValidator;
+Use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use AppBundle\Exception\TransactionNotValidException;
+use AppBundle\Exception\NotFoundException;
 
 class RestApiController extends FOSRestController
 {
@@ -25,17 +29,17 @@ class RestApiController extends FOSRestController
         $this->commandBus = $commandBus;
     }
 
+    // [POST] /api/v1/transactions
     public function postTransactionAction(Request $request)
     {
         $validator = $this->get('transaction_validator');
         $payload = $request->request->all();
-
         $em = $this->getDoctrine()->getManager();
-        $content = $request->getContent();
+
         try {
             $transaction = $validator->validate($payload);
         } catch (TransactionNotValidException $e) {
-            $errors = $e->getErrors();
+            return new JsonResponse( $e->getErrors() , $e->getCode());
         }
 
         $this->commandBus->handle(new AddTransactionAction( $transaction ));
@@ -48,6 +52,20 @@ class RestApiController extends FOSRestController
         return $response;
     }
 
+    // [GET] /api/v1/transactions/{id}
     public function getTransactionsAction($id){}
+    
+    // [PATCH] /api/v1/transactions/{id}/refund
+    public function refundTransactionsAction($id)
+    {
+        $id = abs((int) $id);
+        try {
+            $this->commandBus->handle(new RefundTransactionAction($id));
+        } catch (NotFoundException $e) {
+            return new JsonResponse($e->getMessage(), $e->getCode());
+        }
+
+        return new JsonResponse();
+    }
 }
 	
