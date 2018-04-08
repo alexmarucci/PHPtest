@@ -9,19 +9,19 @@ use SimpleBus\Message\Name\NamedMessage;
 */
 class AddTransactionAction implements NamedMessage
 {
-	private $transactionData;
+	private $transaction;
 	
-	function __construct(array $transactionData)
+	function __construct(Transaction $transaction)
 	{
-		$this->transactionData = $transactionData;
+		$this->transaction = $transaction;
 	}
 	/**
-	* Get transactionData
+	* Get transaction
 	* @return array
 	*/
-	public function getTransactionData() :array
+	public function getTransaction() :Transaction
 	{
-	    return $this->transactionData;
+	    return $this->transaction;
 	}
 
 	public static function messageName()

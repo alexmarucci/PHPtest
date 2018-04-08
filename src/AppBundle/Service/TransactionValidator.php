@@ -19,7 +19,7 @@ class TransactionValidator
 		$this->formFactory = $formFactory;
 	}
 	public function validate($data)
-	{	
+	{
 		if (array_key_exists('created_at', $data)) {
 			$data['created_at'] = (new \DateTime($data['created_at']))->format(self::DATE_TIME_FORMAT);
 		}

@@ -14,7 +14,8 @@ class TransactionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
-            'data_class' => Transaction::class
+            'data_class' => Transaction::class,
+            'allow_extra_fields' => true
         ));
     }
 

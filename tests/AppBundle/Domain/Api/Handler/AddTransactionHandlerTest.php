@@ -21,16 +21,19 @@ class AddTransactionActionTest extends KernelTestCase
     {
         $data = array();
 
-        $data['TRANSACTION ID'] = 123456;
-        $data['STORE ID'] = '1';
-        $data['TOTAL AMOUNT'] = '1';
-        $data['CURRENCY'] = 'GBP';
-        $data['CREATED AT'] = '07/04/2018 10:10';
-        
+        $data['transaction_id'] = 123456;
+        $data['store'] = '1';
+        $data['total_amount'] = '1';
+        $data['currency'] = 'GBP';
+        $data['created_at'] = '07/04/2018 10:10';
+
+        $transactionValidator = static::$kernel->getContainer()->get('transaction_validator');
+        $transaction = $transactionValidator->validate( $data );
+
         $em = static::$kernel->getContainer()->get('doctrine')->getManager();
         
         $commandBus = static::$kernel->getContainer()->get('command_bus');
-        $commandBus->handle(new AddTransactionAction( $data ));
+        $commandBus->handle(new AddTransactionAction( $transaction ));
         $transactionImported = (new SimpleResponder())->respond();
 
         $this->assertInstanceOf(Transaction::class, $transactionImported );

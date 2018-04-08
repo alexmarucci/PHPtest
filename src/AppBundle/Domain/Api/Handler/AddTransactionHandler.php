@@ -23,7 +23,7 @@ class AddTransactionHandler extends CommandHandler
 		$transactionRepository = $this->em->getRepository( Transaction::class );
 
     	try {
-    		$transaction = $transactionRepository->import( $action->getTransactionData() );
+    		$transaction = $transactionRepository->import( $action->getTransaction() );
     		$transaction = $this->em->getRepository(Transaction::class)->findOneById($transaction);
 			$this->eventRecorder->record(new TransactionAdded($transaction));
     	} catch (\Exception $e) { }

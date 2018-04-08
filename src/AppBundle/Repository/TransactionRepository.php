@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Transaction;
 use \Doctrine\DBAL\Types\Type as DataType;
 
 /**
@@ -12,7 +13,7 @@ use \Doctrine\DBAL\Types\Type as DataType;
  */
 class TransactionRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function import($data)
+	public function import(Transaction $transaction)
 	{
 		// Use pure SQL as is much more faster
         $sql = "INSERT INTO Transaction(transaction_id, store_id, total_amount, currency, created_at)
@@ -20,11 +21,11 @@ class TransactionRepository extends \Doctrine\ORM\EntityRepository
         $connection = $this->getEntityManager()->getConnection();
         $stmt = $connection->prepare($sql);
         
-        $stmt->bindValue( "transactionId", $data['TRANSACTION ID'] );
-        $stmt->bindValue( "storeId", $data['STORE ID'] );
-        $stmt->bindValue( "totalAmount", $data['TOTAL AMOUNT'] );
-        $stmt->bindValue( "currency", $data['CURRENCY'] );
-        $stmt->bindValue( "createdAt", new \Datetime($data['CREATED AT']), DataType::DATETIME );
+        $stmt->bindValue( "transactionId", $transaction->getTransactionId() );
+        $stmt->bindValue( "storeId", $transaction->getStore()->getId() );
+        $stmt->bindValue( "totalAmount", $transaction->getTotalAmount() );
+        $stmt->bindValue( "currency", $transaction->getCurrency() );
+        $stmt->bindValue( "createdAt", $transaction->getCreatedAt(), DataType::DATETIME );
 
         $stmt->execute();
         return $connection->lastInsertId();

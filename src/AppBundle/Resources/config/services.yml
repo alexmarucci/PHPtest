@@ -2,6 +2,7 @@ services:
     transaction_validator:
         class: AppBundle\Service\TransactionValidator
         arguments: ["@form.factory"]
+        public: true
     base_handler:
         class: AppBundle\Domain\Handler
         abstract:  true
@@ -22,5 +23,6 @@ services:
     add_transaction_command_listener:
         class: AppBundle\Domain\Api\EventListener\TransactionAddedListener
         arguments: ['@AppBundle\Domain\Api\Responder\SimpleResponder']
+        public: true
         tags:
             - { name: event_subscriber, subscribes_to: transaction_added_event, method: onTransactionAdded }
