@@ -156,7 +156,7 @@ class Store
     */
     public function addTransaction(Transaction $transaction)
     {
-        $this->transactions[] = $transactions;
+        $this->transactions[] = $transaction;
 
         return $this;
     }

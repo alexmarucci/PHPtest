@@ -27,6 +27,13 @@ services:
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: command_handler, handles: add_transaction_action }
+    get_marketing_report_command_handler:
+        class: AppBundle\Domain\Transaction\Handler\GetMarketingReportActionHandler
+        parent: "base_handler"
+        public: true
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: command_handler, handles: get_marketing_action }
     add_transaction_command_listener:
         class: AppBundle\Domain\Transaction\EventListener\TransactionAddedListener
         arguments: ['@AppBundle\Domain\Transaction\Responder\SimpleResponder']

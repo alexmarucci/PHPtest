@@ -30,8 +30,6 @@ class RefundTransactionHandler extends CommandHandler
 			$this->em->persist($transaction);
 			$this->em->flush();
 		}
-		else throw new NotFoundException("Transaction could not be found", 404);
-		
-		
+		else throw new NotFoundException("Transaction could not be found", 404);		
 	}
 }

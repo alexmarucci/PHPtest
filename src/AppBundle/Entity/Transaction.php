@@ -6,13 +6,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Store;
 use AppBundle\Entity\Refund;
+use AppBundle\Report\Reportable;
+use AppBundle\Report\AbstractReport as Report;
+
 /**
  * Transaction
  *
  * @ORM\Table(name="transaction")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TransactionRepository")
  */
-class Transaction
+class Transaction extends Reportable
 {
     /**
      * @var int
@@ -226,6 +229,10 @@ class Transaction
     {
         $this->transactionId = $transactionId;
         return $this;
+    }
+
+    public function accept(Report $report){
+        $report->reportTransaction($this);
     }
 }
 
