@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Domain\Api\Responder;
+namespace AppBundle\Domain\Transaction\Responder;
 
 class SimpleResponder
 {

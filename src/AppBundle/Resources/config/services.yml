@@ -9,27 +9,27 @@ services:
         arguments: ["@event_recorder"]
     csv_parser:
       class: ParseCsv\Csv
-    transaction_csv_importer:
-        class: AppBundle\Service\TransactionCSVImporter
+    transaction_csv_parser:
+        class: AppBundle\Service\TransactionCSVParser
         arguments: ["@csv_parser", "@doctrine.orm.entity_manager"]
         public: true
     refund_transaction_command_handler:
-        class: AppBundle\Domain\Api\Handler\RefundTransactionHandler
+        class: AppBundle\Domain\Transaction\Handler\RefundTransactionHandler
         parent: "base_handler"
         public: true
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: command_handler, handles: refund_transaction_action }
     add_transaction_command_handler:
-        class: AppBundle\Domain\Api\Handler\AddTransactionHandler
+        class: AppBundle\Domain\Transaction\Handler\AddTransactionHandler
         parent: "base_handler"
         public: true
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: command_handler, handles: add_transaction_action }
     add_transaction_command_listener:
-        class: AppBundle\Domain\Api\EventListener\TransactionAddedListener
-        arguments: ['@AppBundle\Domain\Api\Responder\SimpleResponder']
+        class: AppBundle\Domain\Transaction\EventListener\TransactionAddedListener
+        arguments: ['@AppBundle\Domain\Transaction\Responder\SimpleResponder']
         public: true
         tags:
             - { name: event_subscriber, subscribes_to: transaction_added_event, method: onTransactionAdded }

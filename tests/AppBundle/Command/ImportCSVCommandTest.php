@@ -35,7 +35,7 @@ class ImportCSVCommandTest extends KernelTestCase
 
     public function testInvalidFile()
     {
-        $filename = 'salesData_06-04-2018_invalid' . '.csv';
+        $filename = 'salesData_06-04-2018_bad_format' . '.csv';
         $filePath = static::$kernel->getRootDir() . '/../storage/';
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Error while parsing the file. ' . $filePath . $filename);

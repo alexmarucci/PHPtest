@@ -19,7 +19,7 @@ Feature: Import CSV Command
 
   Scenario: I can run the command with filename parameter and the file provided is not a valid CSV
     Given a shell console
-    When I execute the "transactions:import-csv" command with a "filename" option and "salesData_06-04-2018_invalid.csv" parameter
-    And the file "salesData_06-04-2018_invalid.csv" exists
-    And the file "salesData_06-04-2018_invalid.csv" is not a valid CSV
-    Then the command CommandException should be "Error while parsing the file. ""salesData_06-04-2018_invalid.csv"
+    When I execute the "transactions:import-csv" command with a "filename" option and "salesData_06-04-2018_bad_format.csv" parameter
+    And the file "salesData_06-04-2018_bad_format.csv" exists
+    And the file "salesData_06-04-2018_bad_format.csv" is not a valid CSV
+    Then the command CommandException should be "Error while parsing the file. ""salesData_06-04-2018_bad_format.csv"

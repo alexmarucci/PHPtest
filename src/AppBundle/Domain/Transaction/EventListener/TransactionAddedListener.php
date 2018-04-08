@@ -1,8 +1,8 @@
 <?php
-namespace AppBundle\Domain\Api\EventListener;
+namespace AppBundle\Domain\Transaction\EventListener;
 
-use AppBundle\Domain\Api\Event\TransactionAdded;
-use	AppBundle\Domain\Api\Responder\SimpleResponder;
+use AppBundle\Domain\Transaction\Event\TransactionAdded;
+use	AppBundle\Domain\Transaction\Responder\SimpleResponder;
 
 class TransactionAddedListener
 {

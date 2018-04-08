@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use SimpleBus\SymfonyBridge\Bus\CommandBus;
 
 use AppBundle\Entity\Transaction;
-use AppBundle\Domain\Api\Action\AddTransactionAction;
-use AppBundle\Domain\Api\Action\RefundTransactionAction;
-use AppBundle\Domain\Api\Responder\SimpleResponder;
+use AppBundle\Domain\Transaction\Action\AddTransactionAction;
+use AppBundle\Domain\Transaction\Action\RefundTransactionAction;
+use AppBundle\Domain\Transaction\Responder\SimpleResponder;
 use AppBundle\Service\TransactionValidator;
 Use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Exception\TransactionNotValidException;

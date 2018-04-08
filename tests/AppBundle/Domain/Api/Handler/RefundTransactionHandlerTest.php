@@ -1,11 +1,11 @@
 <?php 
 
-namespace Tests\AppBundle\Domain\Api\Handler;
+namespace Tests\AppBundle\Domain\Transaction\Handler;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use AppBundle\Entity\Transaction;
 use AppBundle\Entity\Refund;
-use AppBundle\Domain\Api\Action\RefundTransactionAction;
+use AppBundle\Domain\Transaction\Action\RefundTransactionAction;
 
 class RefundTransactionHandlerTest extends KernelTestCase
 {

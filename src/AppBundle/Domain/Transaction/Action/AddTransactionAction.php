@@ -1,5 +1,5 @@
 <?php
-namespace AppBundle\Domain\Api\Action;
+namespace AppBundle\Domain\Transaction\Action;
 
 use AppBundle\Entity\Transaction;
 use SimpleBus\Message\Name\NamedMessage;
