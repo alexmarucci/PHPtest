@@ -21,12 +21,12 @@ class GetMarketingReportActionHandler extends CommandHandler
 
 	public function handle(GetMarketingReportAction $action)
 	{
-		$store = $action->getStore();
-		$marketinReport = new MarketingReport();
-		foreach ($store->getTransactions() as $transaction) {
-			$transaction->accept( $marketinReport );
+		$transactions = $action->getTransactions();
+		$marketingReport = new MarketingReport();
+		foreach ($transactions as $transaction) {
+			$transaction->accept( $marketingReport );
 		}
 		
-		$this->eventRecorder->record(new MarketingReportReady($marketinReport));
+		$this->eventRecorder->record(new MarketingReportReady($marketingReport));
 	}
 }

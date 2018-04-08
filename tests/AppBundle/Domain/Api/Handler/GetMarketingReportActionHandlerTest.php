@@ -23,15 +23,16 @@ class GetMarketingReportActionHandler extends KernelTestCase
     {
         $em = static::$kernel->getContainer()->get('doctrine')->getManager();
 
-        $store = $this->getFakeStore();
+        $transactions = $this->getFakeStore();
 
         $commandBus = static::$kernel->getContainer()->get('command_bus');
-        $commandBus->handle(new GetMarketingReportAction( $store ));
+        $commandBus->handle(new GetMarketingReportAction( $transactions ));
         
         $responder = new SimpleResponder();
         $expectedData = array(
             'store_id' => 1,
             'store_name' => 'Test Store',
+            'date' => '04-04-2018',
             'report' => [
                 'total_transactions' => 3,
                 'revenue' => 30
@@ -44,6 +45,8 @@ class GetMarketingReportActionHandler extends KernelTestCase
 
     private function getFakeStore()
     {
+        $dailyTransaction = array();
+
         $store = new Store();
         $store->setId(1);
         $store->setName('Test Store');
@@ -51,10 +54,11 @@ class GetMarketingReportActionHandler extends KernelTestCase
             $transaction = new Transaction();
             $transaction->setTotalAmount(10);
             $transaction->setStore($store);
-            $store->addTransaction( $transaction );
+            $transaction->setCreatedAt(new \DateTime('04-04-2018'));
+            $dailyTransaction[] = $transaction;
         }
 
-        return $store;
+        return $dailyTransaction;
     }
 
     /**

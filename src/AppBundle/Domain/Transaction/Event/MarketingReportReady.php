@@ -13,7 +13,7 @@ class MarketingReportReady implements NamedMessage
 	{
 		$this->marketingReport = $marketingReport;
 	}
-	
+
 	public function getMarketingReport()
 	{
 		return $this->marketingReport;

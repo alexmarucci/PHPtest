@@ -6,19 +6,19 @@ use SimpleBus\Message\Name\NamedMessage;
 
 class GetMarketingReportAction implements NamedMessage
 {
-	private $store;
+	private $transactions;
 	
-	function __construct(Store $store)
+	function __construct($transactions)
 	{
-		$this->store = $store;
+		$this->transactions = $transactions;
 	}
 	/**
-	* Get store
+	* Get Transactions
 	* @return array
 	*/
-	public function getStore() :Store
+	public function getTransactions()
 	{
-	    return $this->store;
+	    return $this->transactions;
 	}
 
 	public static function messageName()

@@ -9,6 +9,7 @@ class MarketingReport extends Report
 	private $totalNumberOfTransactions;
 	private $dailyRevenue;
 	private $store;
+	private $reportDate;
 
 	public function __construct()
 	{
@@ -20,6 +21,9 @@ class MarketingReport extends Report
 		if ($this->store === null) {
 			$this->store = $transaction->getStore();
 		}
+		if ($this->reportDate === null) {
+			$this->reportDate = $transaction->getCreatedAt()->format('d-m-Y');
+		}
 		$this->totalNumberOfTransactions++;
 		$this->dailyRevenue += $transaction->getTotalAmount();
 	}
@@ -29,6 +33,7 @@ class MarketingReport extends Report
 		return array(
 			'store_id' => $this->store->getId(),
             'store_name' => $this->store->getName(),
+            'date' => $this->reportDate,
             'report' => [
                 'total_transactions' => $this->totalNumberOfTransactions,
                 'revenue' => $this->dailyRevenue
