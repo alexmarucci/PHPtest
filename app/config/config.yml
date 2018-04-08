@@ -74,3 +74,11 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+#SimpleBus Configuration
+command_bus:
+    # default value for this key is "class_based"
+    command_name_resolver_strategy: named_message
+event_bus:
+    # default value for this key is "class_based"
+    event_name_resolver_strategy: named_message

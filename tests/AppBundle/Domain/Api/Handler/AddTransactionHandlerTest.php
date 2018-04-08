@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Domain\Api\Handler;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use AppBundle\Entity\Transaction;
 use AppBundle\Domain\Api\Action\AddTransactionAction;
+use AppBundle\Domain\Api\Responder\SimpleResponder;
 
 class AddTransactionActionTest extends KernelTestCase
 {
@@ -27,10 +28,10 @@ class AddTransactionActionTest extends KernelTestCase
         $data['CREATED AT'] = '07/04/2018 10:10';
         
         $em = static::$kernel->getContainer()->get('doctrine')->getManager();
+        
         $commandBus = static::$kernel->getContainer()->get('command_bus');
         $commandBus->handle(new AddTransactionAction( $data ));
-
-        $transactionImported = $em->getRepository(Transaction::class)->findOneByTransactionId(123456);
+        $transactionImported = (new SimpleResponder())->respond();
 
         $this->assertInstanceOf(Transaction::class, $transactionImported );
     }

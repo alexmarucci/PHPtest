@@ -2,11 +2,12 @@
 namespace AppBundle\Domain\Api\Action;
 
 use AppBundle\Entity\Transaction;
+use SimpleBus\Message\Name\NamedMessage;
 
 /**
 * 
 */
-class AddTransactionAction
+class AddTransactionAction implements NamedMessage
 {
 	private $transactionData;
 	
@@ -22,4 +23,9 @@ class AddTransactionAction
 	{
 	    return $this->transactionData;
 	}
+
+	public static function messageName()
+    {
+        return 'add_transaction_action';
+    }
 }

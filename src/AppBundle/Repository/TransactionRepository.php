@@ -17,8 +17,8 @@ class TransactionRepository extends \Doctrine\ORM\EntityRepository
 		// Use pure SQL as is much more faster
         $sql = "INSERT INTO Transaction(transaction_id, store_id, total_amount, currency, created_at)
                 VALUES (:transactionId, :storeId, :totalAmount, :currency, :createdAt)";
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $connection = $this->getEntityManager()->getConnection();
+        $stmt = $connection->prepare($sql);
         
         $stmt->bindValue( "transactionId", $data['TRANSACTION ID'] );
         $stmt->bindValue( "storeId", $data['STORE ID'] );
@@ -27,5 +27,6 @@ class TransactionRepository extends \Doctrine\ORM\EntityRepository
         $stmt->bindValue( "createdAt", new \Datetime($data['CREATED AT']), DataType::DATETIME );
 
         $stmt->execute();
+        return $connection->lastInsertId();
 	}
 }

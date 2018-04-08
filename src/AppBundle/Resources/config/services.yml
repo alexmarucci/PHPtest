@@ -1,4 +1,8 @@
 services:
+    base_handler:
+        class: AppBundle\Domain\Handler
+        abstract:  true
+        arguments: ["@event_recorder"]
     csv_parser:
       class: ParseCsv\Csv
     transaction_csv_importer:
@@ -7,6 +11,13 @@ services:
         public: true
     add_transaction_command_handler:
         class: AppBundle\Domain\Api\Handler\AddTransactionHandler
+        parent: "base_handler"
+        public: true
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
-            - { name: command_handler, handles: AppBundle\Domain\Api\Action\AddTransactionAction }
+            - { name: command_handler, handles: add_transaction_action }
+    add_transaction_command_listener:
+        class: AppBundle\Domain\Api\EventListener\TransactionAddedListener
+        arguments: ['@AppBundle\Domain\Api\Responder\SimpleResponder']
+        tags:
+            - { name: event_subscriber, subscribes_to: transaction_added_event, method: onTransactionAdded }
