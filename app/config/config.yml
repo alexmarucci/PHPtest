@@ -103,3 +103,12 @@ fos_rest:
     format_listener: true
     view:
         view_response_listener: 'force'
+
+#Bazinga Geocoder
+bazinga_geocoder:
+  providers:
+    google:
+      factory: Bazinga\GeocoderBundle\ProviderFactory\GoogleMapsFactory
+      options: 
+        region: 'United Kingdom'
+        api_key: '%google_geocoder_api_key%'

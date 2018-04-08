@@ -18,3 +18,6 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    #Google geocoder api key
+    google_geocoder_api_key: xxxxxxxxxxxxx
