@@ -4,6 +4,7 @@ namespace tests\AppBundle\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Behat\Gherkin\Node\PyStringNode;
 use Behatch\Context\RestContext as BehatchRest;
  
 class RestContext extends BehatchRest implements KernelAwareContext
@@ -28,6 +29,23 @@ class RestContext extends BehatchRest implements KernelAwareContext
     public function setKernel(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
+    }
+
+    public function iSendARequestTo($method, $url, PyStringNode $body = null, $files = [])
+    {
+        if(null !== $body){
+            $body = $body->getRaw();
+            $body = trim(preg_replace('/\s+/', ' ', $body));
+        }
+
+        return $this->request->send(
+            $method,
+            $this->locatePath($url),
+            [],
+            $files,
+            $body !== null ? $body : null,
+            ['Content-Type: application/json']
+        );
     }
 
     /**

@@ -82,3 +82,24 @@ command_bus:
 event_bus:
     # default value for this key is "class_based"
     event_name_resolver_strategy: named_message
+
+# Nelmio CORS Configuration
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: ['*']
+        allow_headers: ['*']
+        allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+        max_age: 3600
+        hosts: []
+        origin_regex: false
+        
+#RestBundle
+fos_rest:
+    routing_loader:
+        include_format: false
+    param_fetcher_listener: true
+    body_listener: true
+    format_listener: true
+    view:
+        view_response_listener: 'force'

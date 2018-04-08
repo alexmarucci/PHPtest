@@ -1,0 +1,4 @@
+rest_api:
+    type: rest
+    resource: AppBundle\Controller\RestApiController
+    name_prefix:  api_

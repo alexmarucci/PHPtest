@@ -7,17 +7,18 @@ Feature: Rest API - Add Transactions
   Background:
   	Given I send a "POST" request to "api/v1/transactions" with body:
   	"""
-  		{
-			'transaction_id': '123456',
-			'store_id': '1',
-			'total_amount': '1',
-			'currency': 'GBP',
-			'created_at': '07/04/2018 16:16',
-			'apiKey': 'xxxxx_good_api_key_xxxxxxx'
-  		}
+	{
+		"transaction_id": "123456",
+		"store": "1",
+		"total_amount": "1",
+		"currency": "GBP",
+		"created_at": "07/04/2018 16:16",
+		"apiKey": "xxxxx_good_api_key_xxxxxxx"
+	}
   	"""
 
   Scenario: Create a transaction
+  	Then the response status code should be 201
   	Then the header "Location" should be equal to "/api/v1/transactions/1"
   	And the "transaction_id" property should be equals to "123456"
 
