@@ -3,6 +3,8 @@ default:
     - %paths.base%
   suites:
     default:
+      filters:
+        tags: "~@report"
       paths:
         features: tests/AppBundle/Feature
       contexts:
