@@ -44,6 +44,20 @@ class Store
      */
     private $postcode;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="latitude", type="string", length=30)
+     */
+    private $latitude;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="longitude", type="string", length=30)
+     */
+    private $longitude;
+
      /**
      * @var ArrayCollection
      * 
@@ -168,6 +182,43 @@ class Store
     {
         $this->transactions[] = $transaction;
 
+        return $this;
+    }
+    /**
+    * Get latitude
+    * @return  
+    */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+    
+    /**
+    * Set latitude
+    * @return $this
+    */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    /**
+    * Get longitude
+    * @return  
+    */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+    
+    /**
+    * Set longitude
+    * @return $this
+    */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
         return $this;
     }
 }

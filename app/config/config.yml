@@ -110,5 +110,5 @@ bazinga_geocoder:
     google:
       factory: Bazinga\GeocoderBundle\ProviderFactory\GoogleMapsFactory
       options: 
-        region: 'United Kingdom'
+        region: 'UK'
         api_key: '%google_geocoder_api_key%'

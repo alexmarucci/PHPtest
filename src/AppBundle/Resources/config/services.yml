@@ -34,6 +34,13 @@ services:
         arguments: ["@doctrine.orm.entity_manager"]
         tags:
             - { name: command_handler, handles: get_marketing_action }
+    get_stores_from_location_command_handler:
+        class: AppBundle\Domain\Transaction\Handler\GetStoresFromLocationHandler
+        parent: "base_handler"
+        public: true
+        arguments: ["@bazinga_geocoder.provider.google", "@doctrine.orm.entity_manager"]
+        tags:
+            - { name: command_handler, handles: get_stores_from_location_action }
     add_transaction_command_listener:
         class: AppBundle\Domain\Transaction\EventListener\TransactionAddedListener
         arguments: ['@AppBundle\Domain\Transaction\Responder\SimpleResponder']
@@ -46,3 +53,9 @@ services:
         public: true
         tags:
             - { name: event_subscriber, subscribes_to: marketing_report_ready_event, method: onReportReady }
+    stores_for_location_found_listener:
+        class: AppBundle\Domain\Transaction\EventListener\StoreFromLocationFoundListener
+        arguments: ['@AppBundle\Domain\Transaction\Responder\SimpleResponder']
+        public: true
+        tags:
+            - { name: event_subscriber, subscribes_to: stores_from_location_found_event, method: onStoresForLocationFound }
